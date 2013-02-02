@@ -184,12 +184,12 @@ namespace Serialize.Linq.Tests
 
         private static IEnumerable<ITextSerializer> CreateTextSerializers()
         {
-            return new ITextSerializer[] { new JsonSerializer(), new XmlSerializer() };
+            return new ITextSerializer[] { new NewtonsoftJsonSerializer(), new JsonSerializer(), new XmlSerializer() };
         }
 
         private static IEnumerable<IBinarySerializer> CreateBinarySerializers()
         {
-            return new IBinarySerializer[] { new BinarySerializer() };
+            return new IBinarySerializer[] { /*new ProtobufSerializer(),*/ new BinarySerializer() };
         }
     }
 }
