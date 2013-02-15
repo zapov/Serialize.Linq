@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serialize.Linq.Interfaces;
+using Serialize.Linq.Nodes;
 using Serialize.Linq.Serializers;
 using Serialize.Linq.Tests.Internals;
 
@@ -82,7 +83,7 @@ namespace Serialize.Linq.Tests
 
                     this.TestContext.WriteLine("{0} serializes to bytes with length {1}", expected, bytes.Length);
 
-                    var actual = serializer.DeserializeBinary(bytes);
+                    var actual = serializer.DeserializeBinary<LambdaExpressionNode>(bytes);
 
                     if (expected == null)
                     {
@@ -110,7 +111,7 @@ namespace Serialize.Linq.Tests
                 var bytes = serializer.SerializeBinary(expected);
                 this.TestContext.WriteLine("{0} serializes to bytes with length {1}", expected, bytes.Length);
 
-                var actual = (Expression<Func<Bar, bool>>)serializer.DeserializeBinary(bytes);
+                var actual = (Expression<Func<Bar, bool>>)serializer.DeserializeBinary<LambdaExpressionNode>(bytes);
                 Assert.IsNotNull(actual, "Input expression was {0}, but output is null for '{1}'", expected, binSerializer.GetType());
                 ExpressionAssert.AreEqual(expected, actual);
 
@@ -189,7 +190,7 @@ namespace Serialize.Linq.Tests
 
         private static IEnumerable<IBinarySerializer> CreateBinarySerializers()
         {
-            return new IBinarySerializer[] { /*new ProtobufSerializer(),*/ new BinarySerializer() };
+            return new IBinarySerializer[] { new ProtobufSerializer(), new BinarySerializer() };
         }
     }
 }

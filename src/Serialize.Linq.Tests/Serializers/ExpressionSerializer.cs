@@ -65,6 +65,13 @@ namespace Serialize.Linq.Serializers
             return node != null ? node.ToExpression() : null;
         }
 
+        public Expression DeserializeBinary<TNode>(byte[] bytes)
+            where TNode : ExpressionNode
+        {
+            var node = this.BinarySerializer.Deserialize<TNode>(bytes);
+            return node != null ? node.ToExpression() : null;
+        }
+
         private ITextSerializer TextSerializer
         {
             get 

@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Serialize.Linq.Interfaces;
-using Serialize.Linq.Internals;
 
 namespace Serialize.Linq.Nodes
 {
@@ -52,7 +51,10 @@ namespace Serialize.Linq.Nodes
 
         internal ElementInit ToElementInit(ExpressionContext context)
         {
-            return Expression.ElementInit(this.AddMethod.ToMemberInfo(context), this.Arguments.GetExpressions(context));
+            return 
+                Expression.ElementInit(
+                    this.AddMethod.ToMemberInfo(context), 
+                    (this.Arguments ?? new ExpressionNodeList()).GetExpressions(context));
         }
     }
 }

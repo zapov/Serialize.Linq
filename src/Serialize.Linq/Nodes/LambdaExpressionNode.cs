@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Serialize.Linq.Extensions;
 using Serialize.Linq.Interfaces;
-using Serialize.Linq.Internals;
 
 namespace Serialize.Linq.Nodes
 {
@@ -48,7 +47,7 @@ namespace Serialize.Linq.Nodes
         public override Expression ToExpression(ExpressionContext context)
         {
             var body = this.Body.ToExpression(context);
-            var parameters = this.Parameters.GetParameterExpressions(context).ToArray();
+            var parameters = (this.Parameters ?? new ExpressionNodeList()).GetParameterExpressions(context).ToArray();
 
             var bodyParameters = body.GetNodes().OfType<ParameterExpression>().ToArray();
             for (var i = 0; i < parameters.Length; ++i)

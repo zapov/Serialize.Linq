@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Serialize.Linq.Interfaces;
-using Serialize.Linq.Internals;
 
 namespace Serialize.Linq.Nodes
 {
@@ -45,7 +44,10 @@ namespace Serialize.Linq.Nodes
 
         public override Expression ToExpression(ExpressionContext context)
         {
-            return System.Linq.Expressions.Expression.Invoke(this.Expression.ToExpression(context), this.Arguments.GetExpressions(context));
+            return 
+                System.Linq.Expressions.Expression.Invoke(
+                    this.Expression.ToExpression(context), 
+                    (this.Arguments ?? new ExpressionNodeList()).GetExpressions(context));
         }
     }
 }

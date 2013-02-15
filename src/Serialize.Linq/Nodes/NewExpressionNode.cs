@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Serialize.Linq.Interfaces;
-using Serialize.Linq.Internals;
 
 namespace Serialize.Linq.Nodes
 {
@@ -60,7 +59,7 @@ namespace Serialize.Linq.Nodes
                 return Expression.New(this.Type.ToType(context));
 
             var constructor = this.Constructor.ToMemberInfo(context);
-            var arguments = this.Arguments.GetExpressions(context).ToArray();
+            var arguments = (this.Arguments ?? new ExpressionNodeList()).GetExpressions(context).ToArray();
             var members = this.Members != null ? this.Members.GetMembers(context).ToArray() : null;
             return members != null && members.Length > 0 ? Expression.New(constructor, arguments, members) : Expression.New(constructor, arguments);
         }

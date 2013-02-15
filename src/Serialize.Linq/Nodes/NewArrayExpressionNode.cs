@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Serialize.Linq.Interfaces;
-using Serialize.Linq.Internals;
 
 namespace Serialize.Linq.Nodes
 {
@@ -39,10 +38,16 @@ namespace Serialize.Linq.Nodes
             switch (this.NodeType)
             {
                 case ExpressionType.NewArrayBounds:
-                    return Expression.NewArrayBounds(this.Type.ToType(context).GetElementType(), this.Expressions.GetExpressions(context));
+                    return 
+                        Expression.NewArrayBounds(
+                            this.Type.ToType(context).GetElementType(), 
+                            (this.Expressions ?? new ExpressionNodeList()).GetExpressions(context));
 
                 case ExpressionType.NewArrayInit:
-                    return Expression.NewArrayInit(this.Type.ToType(context).GetElementType(), this.Expressions.GetExpressions(context));
+                    return 
+                        Expression.NewArrayInit(
+                            this.Type.ToType(context).GetElementType(),
+                            (this.Expressions ?? new ExpressionNodeList()).GetExpressions(context));
 
                 default:
                     throw new InvalidOperationException("Unhandeled nody type: " + this.NodeType);
